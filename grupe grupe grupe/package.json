@@ -1,0 +1,14 @@
+{
+  "name": "grupo-ticord",
+  "version": "1.0.0",
+  "description": "Site do Grupo Ticord (Cord, Tickora, Ingresse Roblox e Shopping Mall Blox), com formulário de contato e painel /admin.",
+  "main": "server.cjs",
+  "scripts": {
+    "start": "node server.cjs"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "license": "UNLICENSED",
+  "private": true
+}

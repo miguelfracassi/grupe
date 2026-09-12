@@ -1,0 +1,255 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Painel /admin — Grupo Ticord</title>
+<meta name="robots" content="noindex, nofollow" />
+<link rel="icon" href="assets/ticord-white.png" />
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<header class="cabecalho">
+  <div class="envolucro">
+    <a class="marca" href="index.html">
+      <img src="assets/ticord-white.png" alt="Ticord Grupo" />
+    </a>
+    <nav class="principal">
+      <ul>
+        <li><a href="index.html">Início</a></li>
+        <li><a href="cord.html">Cord</a></li>
+        <li><a href="tickora.html">Tickora</a></li>
+        <li><a href="ingresse-roblox.html">Ingresse Roblox</a></li>
+        <li><a href="shopping-mall-blox.html">Shopping Mall Blox</a></li>
+      </ul>
+    </nav>
+    <a class="botao-cabecalho" href="contato.html">Fale conosco</a>
+  </div>
+</header>
+
+<section class="admin-topo">
+  <div class="envolucro">
+    <p class="rotulo" style="color:var(--roxo-400)">ÁREA INTERNA</p>
+    <h1>Formulários recebidos</h1>
+    <p>Todos os envios do formulário de contato, com telefone/WhatsApp, Discord e motivo.</p>
+  </div>
+</section>
+
+<section class="secao" style="padding-top:36px;">
+  <div class="envolucro">
+
+    <!-- Portão de senha -->
+    <div id="portao-senha" class="formulario">
+      <h3>Entrar no painel</h3>
+      <p style="color:var(--texto-suave); font-size:0.92rem;">Digite a senha da equipe para ver os envios.</p>
+      <div class="campo">
+        <label for="campo-senha">Senha</label>
+        <input type="password" id="campo-senha" placeholder="Senha do painel" />
+      </div>
+      <div id="erro-senha" class="mensagem-status erro"></div>
+      <button class="botao botao-roxo" id="botao-entrar" style="width:100%;">Entrar</button>
+    </div>
+
+    <!-- Painel (escondido até autenticar) -->
+    <div id="painel" style="display:none;">
+      <div class="painel-controles">
+        <span class="contagem-pill" id="contagem">0 envios</span>
+        <div style="display:flex; gap:10px;">
+          <button class="botao botao-fantasma" style="color:var(--roxo-700); border-color:var(--linha);" id="botao-atualizar">Atualizar lista</button>
+          <button class="botao botao-fantasma" style="color:var(--texto-suave); border-color:var(--linha);" id="botao-sair">Sair</button>
+        </div>
+      </div>
+
+      <div id="area-tabela">
+        <div class="estado-vazio">Carregando envios...</div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<footer class="rodape">
+  <div class="envolucro">
+    <div class="marca-rodape">
+      <img src="assets/ticord.png" alt="Ticord Grupo" />
+      <p>Grupo Ticord administra o Cord, o Tickora, o Ingresse Roblox e o Shopping Mall Blox.</p>
+    </div>
+    <div>
+      <h4>Produtos</h4>
+      <ul>
+        <li><a href="cord.html">Cord</a></li>
+        <li><a href="tickora.html">Tickora</a></li>
+        <li><a href="ingresse-roblox.html">Ingresse Roblox</a></li>
+        <li><a href="shopping-mall-blox.html">Shopping Mall Blox</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Grupo</h4>
+      <ul>
+        <li><a href="index.html">Início</a></li>
+        <li><a href="contato.html">Contato</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Equipe</h4>
+      <ul>
+        <li><a href="admin.html">Painel /admin</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="rodape-base">
+    <div class="envolucro">
+      <p>© 2026 Grupo Ticord.</p>
+      <p>Cord · Tickora · Ingresse Roblox · Shopping Mall Blox</p>
+    </div>
+  </div>
+</footer>
+
+<script>
+  const portaoSenha = document.getElementById('portao-senha');
+  const painel = document.getElementById('painel');
+  const campoSenha = document.getElementById('campo-senha');
+  const erroSenha = document.getElementById('erro-senha');
+  const botaoEntrar = document.getElementById('botao-entrar');
+  const botaoAtualizar = document.getElementById('botao-atualizar');
+  const botaoSair = document.getElementById('botao-sair');
+  const areaTabela = document.getElementById('area-tabela');
+  const contagem = document.getElementById('contagem');
+
+  let senhaAtual = sessionStorage.getItem('ticord_admin_senha') || '';
+
+  function formatarData(iso) {
+    const d = new Date(iso);
+    return d.toLocaleString('pt-BR', { dateStyle: 'short', timeStyle: 'short' });
+  }
+
+  function escapar(texto) {
+    const div = document.createElement('div');
+    div.textContent = texto ?? '';
+    return div.innerHTML;
+  }
+
+  async function carregarEnvios() {
+    areaTabela.innerHTML = '<div class="estado-vazio">Carregando envios...</div>';
+    try {
+      const resposta = await fetch('/api/envios', {
+        headers: { 'x-admin-senha': senhaAtual },
+      });
+
+      if (resposta.status === 401) {
+        mostrarPortao('Senha incorreta. Tente novamente.');
+        return;
+      }
+
+      const envios = await resposta.json();
+      contagem.textContent = envios.length + (envios.length === 1 ? ' envio' : ' envios');
+
+      if (envios.length === 0) {
+        areaTabela.innerHTML = '<div class="estado-vazio">Nenhum formulário recebido ainda.</div>';
+        return;
+      }
+
+      const linhas = envios
+        .slice()
+        .reverse()
+        .map((envio) => `
+          <tr data-id="${envio.id}">
+            <td>${formatarData(envio.criadoEm)}</td>
+            <td>${escapar(envio.nome)}</td>
+            <td>${escapar(envio.email)}</td>
+            <td>${escapar(envio.telefone)}</td>
+            <td>${escapar(envio.discord)}</td>
+            <td><span class="etiqueta-motivo">${escapar(envio.motivo)}</span></td>
+            <td style="max-width:260px;">${escapar(envio.mensagem)}</td>
+            <td><button class="botao-excluir" data-id="${envio.id}">Excluir</button></td>
+          </tr>
+        `)
+        .join('');
+
+      areaTabela.innerHTML = `
+        <div style="overflow-x:auto;">
+          <table class="tabela-envios">
+            <thead>
+              <tr>
+                <th>Data</th>
+                <th>Nome</th>
+                <th>E-mail</th>
+                <th>Telefone / WhatsApp</th>
+                <th>Discord</th>
+                <th>Motivo</th>
+                <th>Mensagem</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>${linhas}</tbody>
+          </table>
+        </div>
+      `;
+
+      areaTabela.querySelectorAll('.botao-excluir').forEach((botao) => {
+        botao.addEventListener('click', () => excluirEnvio(botao.dataset.id));
+      });
+    } catch (erro) {
+      areaTabela.innerHTML = '<div class="estado-vazio">Não foi possível carregar os envios agora.</div>';
+    }
+  }
+
+  async function excluirEnvio(id) {
+    if (!confirm('Excluir este envio? Essa ação não pode ser desfeita.')) return;
+    try {
+      const resposta = await fetch('/api/envios/' + id, {
+        method: 'DELETE',
+        headers: { 'x-admin-senha': senhaAtual },
+      });
+      if (!resposta.ok) throw new Error('Falha ao excluir');
+      carregarEnvios();
+    } catch (erro) {
+      alert('Não foi possível excluir esse envio agora.');
+    }
+  }
+
+  function mostrarPainel() {
+    portaoSenha.style.display = 'none';
+    painel.style.display = 'block';
+    carregarEnvios();
+  }
+
+  function mostrarPortao(mensagemErro) {
+    sessionStorage.removeItem('ticord_admin_senha');
+    senhaAtual = '';
+    painel.style.display = 'none';
+    portaoSenha.style.display = 'block';
+    if (mensagemErro) {
+      erroSenha.style.display = 'block';
+      erroSenha.textContent = mensagemErro;
+    }
+  }
+
+  botaoEntrar.addEventListener('click', async () => {
+    senhaAtual = campoSenha.value;
+    erroSenha.style.display = 'none';
+    const resposta = await fetch('/api/envios', { headers: { 'x-admin-senha': senhaAtual } });
+    if (resposta.status === 401) {
+      erroSenha.style.display = 'block';
+      erroSenha.textContent = 'Senha incorreta.';
+      return;
+    }
+    sessionStorage.setItem('ticord_admin_senha', senhaAtual);
+    mostrarPainel();
+  });
+
+  campoSenha.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') botaoEntrar.click();
+  });
+
+  botaoAtualizar.addEventListener('click', carregarEnvios);
+  botaoSair.addEventListener('click', () => mostrarPortao());
+
+  if (senhaAtual) {
+    mostrarPainel();
+  }
+</script>
+
+</body>
+</html>

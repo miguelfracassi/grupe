@@ -1,0 +1,76 @@
+GRUPO TICORD — SITE
+====================
+
+O que tem aqui
+---------------
+- public/            → as páginas do site (HTML) + style.css + logos
+    index.html            (início)
+    cord.html
+    tickora.html
+    ingresse-roblox.html
+    shopping-mall-blox.html
+    contato.html          (formulário de contato)
+    admin.html            (painel /admin — ver e excluir envios)
+    404.html
+- server.js          → servidor que serve o site e guarda os envios do formulário
+- data/envios.json   → "banco de dados" (arquivo JSON) com os formulários enviados
+- LEIA-ME.txt        → este arquivo
+
+Como rodar
+----------
+Precisa ter o Node.js instalado (não precisa instalar mais nada, o servidor
+não usa nenhuma biblioteca externa).
+
+1. Abra o terminal na pasta do projeto.
+2. Rode:
+
+     node server.js
+
+3. Acesse no navegador:
+
+     http://localhost:3000
+
+O painel fica em:
+
+     http://localhost:3000/admin.html
+
+Senha do painel /admin
+-----------------------
+A senha padrão é:  ticord123
+
+IMPORTANTE: troque essa senha antes de deixar o site no ar de verdade.
+Duas formas de trocar:
+
+  a) Editando a linha no server.js:
+     const ADMIN_SENHA = process.env.ADMIN_SENHA || 'ticord123';
+     (troque 'ticord123' pela senha que quiser)
+
+  b) Ou rodando o servidor assim, sem editar o arquivo:
+     ADMIN_SENHA=suasenha123 node server.js
+
+Como funciona o formulário
+---------------------------
+Quando alguém envia o formulário em /contato.html, os dados (nome, telefone/
+WhatsApp, Discord, motivo e mensagem) são salvos em data/envios.json com
+data e hora e um id único.
+
+No painel /admin, depois de digitar a senha, dá pra:
+- ver todos os envios em uma tabela (mais recentes primeiro)
+- excluir qualquer envio pelo botão "Excluir" (some do arquivo de dados)
+
+Trocar a logo / imagens
+-------------------------
+As imagens ficam em public/assets/:
+- ticord.png        → logo em cinza claro com fundo transparente (usada no rodapé)
+- ticord-white.png   → mesma logo em branco puro com fundo transparente (usada no cabeçalho, sobre o roxo)
+- ticord-full.png    → a arte original com fundo roxo (não é usada nas páginas, fica de referência)
+
+Se quiser trocar por outro arquivo, basta substituir o PNG mantendo o mesmo nome.
+
+Colocando no ar
+-----------------
+Esse servidor guarda os dados em um arquivo local (data/envios.json), então
+funciona bem para testar e para uso interno. Para colocar em um site público
+de verdade, hospede a pasta inteira em qualquer serviço que rode Node.js
+(ex.: Render, Railway, um VPS) e garanta que a pasta "data" não seja apagada
+a cada deploy — ou troque por um banco de dados de verdade mais pra frente.

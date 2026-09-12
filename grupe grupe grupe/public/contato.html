@@ -1,0 +1,196 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Contato — Grupo Ticord</title>
+<meta name="description" content="Fale com o Grupo Ticord sobre o Cord, o Tickora, o Ingresse Roblox ou o Shopping Mall Blox." />
+<link rel="icon" href="assets/ticord-white.png" />
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<header class="cabecalho">
+  <div class="envolucro">
+    <a class="marca" href="index.html">
+      <img src="assets/ticord-white.png" alt="Ticord Grupo" />
+    </a>
+    <nav class="principal">
+      <ul>
+        <li><a href="index.html">Início</a></li>
+        <li><a href="cord.html">Cord</a></li>
+        <li><a href="tickora.html">Tickora</a></li>
+        <li><a href="ingresse-roblox.html">Ingresse Roblox</a></li>
+        <li><a href="shopping-mall-blox.html">Shopping Mall Blox</a></li>
+      </ul>
+    </nav>
+    <a class="botao-cabecalho" href="contato.html" aria-current="page">Fale conosco</a>
+  </div>
+</header>
+
+<section class="cabecalho-produto">
+  <div class="envolucro">
+    <p class="rotulo">FALE COM O GRUPO</p>
+    <h1>Contato</h1>
+    <p>Preencha o formulário abaixo. A equipe responde pelo WhatsApp ou pelo Discord que você informar.</p>
+  </div>
+</section>
+
+<section class="secao">
+  <div class="envolucro">
+    <div class="contato-grade">
+      <div>
+        <div id="status" class="mensagem-status" role="status"></div>
+
+        <form id="formulario-contato" class="formulario" novalidate>
+          <div class="campo">
+            <label for="nome">Nome</label>
+            <input type="text" id="nome" name="nome" placeholder="Seu nome" required />
+          </div>
+
+          <div class="campo">
+            <label for="email">E-mail</label>
+            <input type="email" id="email" name="email" placeholder="seuemail@exemplo.com" required />
+          </div>
+
+          <div class="linha-dupla">
+            <div class="campo">
+              <label for="telefone">Telefone / WhatsApp</label>
+              <input type="tel" id="telefone" name="telefone" placeholder="(00) 00000-0000" required />
+            </div>
+            <div class="campo">
+              <label for="discord">Usuário do Discord</label>
+              <input type="text" id="discord" name="discord" placeholder="usuario" required />
+            </div>
+          </div>
+
+          <div class="campo">
+            <label for="motivo">Motivo do contato</label>
+            <select id="motivo" name="motivo" required>
+              <option value="" disabled selected>Selecione um motivo</option>
+              <option value="Suporte no Cord">Suporte no Cord</option>
+              <option value="Ticket no Tickora">Ticket no Tickora</option>
+              <option value="Acesso pelo Ingresse Roblox">Acesso pelo Ingresse Roblox</option>
+              <option value="Compra no Shopping Mall Blox">Compra no Shopping Mall Blox</option>
+              <option value="Parceria">Parceria</option>
+              <option value="Outro">Outro</option>
+            </select>
+          </div>
+
+          <div class="campo">
+            <label for="mensagem">Mensagem <span class="dica">(conte com detalhes o que aconteceu)</span></label>
+            <textarea id="mensagem" name="mensagem" placeholder="Escreva aqui..." required></textarea>
+          </div>
+
+          <button type="submit" class="botao botao-roxo" id="botao-enviar" style="width:100%;">Enviar mensagem</button>
+        </form>
+      </div>
+
+      <aside>
+        <h3>Outros canais</h3>
+        <div class="canais-contato">
+          <div class="canal">
+            <p class="rotulo">COMUNIDADE</p>
+            <strong>Cord</strong>
+            <p style="margin:4px 0 0; font-size:0.9rem; color:var(--texto-suave);">Avisos e suporte em tempo real com a comunidade.</p>
+          </div>
+          <div class="canal">
+            <p class="rotulo">ATENDIMENTO</p>
+            <strong>Tickora</strong>
+            <p style="margin:4px 0 0; font-size:0.9rem; color:var(--texto-suave);">Abra um ticket para acompanhar seu pedido do início ao fim.</p>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<footer class="rodape">
+  <div class="envolucro">
+    <div class="marca-rodape">
+      <img src="assets/ticord.png" alt="Ticord Grupo" />
+      <p>Grupo Ticord administra o Cord, o Tickora, o Ingresse Roblox e o Shopping Mall Blox.</p>
+    </div>
+    <div>
+      <h4>Produtos</h4>
+      <ul>
+        <li><a href="cord.html">Cord</a></li>
+        <li><a href="tickora.html">Tickora</a></li>
+        <li><a href="ingresse-roblox.html">Ingresse Roblox</a></li>
+        <li><a href="shopping-mall-blox.html">Shopping Mall Blox</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Grupo</h4>
+      <ul>
+        <li><a href="index.html">Início</a></li>
+        <li><a href="contato.html">Contato</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Equipe</h4>
+      <ul>
+        <li><a href="admin.html">Painel /admin</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="rodape-base">
+    <div class="envolucro">
+      <p>© 2026 Grupo Ticord.</p>
+      <p>Cord · Tickora · Ingresse Roblox · Shopping Mall Blox</p>
+    </div>
+  </div>
+</footer>
+
+<script>
+  const formulario = document.getElementById('formulario-contato');
+  const status = document.getElementById('status');
+  const botaoEnviar = document.getElementById('botao-enviar');
+
+  formulario.addEventListener('submit', async (evento) => {
+    evento.preventDefault();
+    status.className = 'mensagem-status';
+    status.textContent = '';
+
+    const dados = {
+      nome: formulario.nome.value.trim(),
+      email: formulario.email.value.trim(),
+      telefone: formulario.telefone.value.trim(),
+      discord: formulario.discord.value.trim(),
+      motivo: formulario.motivo.value,
+      mensagem: formulario.mensagem.value.trim(),
+    };
+
+    if (!dados.nome || !dados.email || !dados.telefone || !dados.discord || !dados.motivo || !dados.mensagem) {
+      status.className = 'mensagem-status erro';
+      status.textContent = 'Preencha todos os campos antes de enviar.';
+      return;
+    }
+
+    botaoEnviar.disabled = true;
+    botaoEnviar.textContent = 'Enviando...';
+
+    try {
+      const resposta = await fetch('/api/enviar', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(dados),
+      });
+
+      if (!resposta.ok) throw new Error('Falha no envio');
+
+      status.className = 'mensagem-status sucesso';
+      status.textContent = 'Mensagem enviada! A equipe vai te responder pelo WhatsApp ou pelo Discord informado.';
+      formulario.reset();
+    } catch (erro) {
+      status.className = 'mensagem-status erro';
+      status.textContent = 'Não foi possível enviar agora. Tente novamente em instantes.';
+    } finally {
+      botaoEnviar.disabled = false;
+      botaoEnviar.textContent = 'Enviar mensagem';
+    }
+  });
+</script>
+
+</body>
+</html>
