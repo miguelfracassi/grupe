@@ -104,6 +104,30 @@ function autenticado(req) {
   return senhaEnviada === ADMIN_SENHA;
 }
 
+function servir404(res) {
+  fs.readFile(path.join(PASTA_PUBLICA, '404.html'), (erro404, conteudo404) => {
+    if (erro404) {
+      res.writeHead(404, { 'Content-Type': 'text/plain; charset=utf-8' });
+      res.end('Página não encontrada');
+    } else {
+      res.writeHead(404, { 'Content-Type': 'text/html; charset=utf-8' });
+      res.end(conteudo404);
+    }
+  });
+}
+
+function enviarArquivo(res, caminhoAbsoluto) {
+  fs.readFile(caminhoAbsoluto, (erro, conteudo) => {
+    if (erro) {
+      servir404(res);
+      return;
+    }
+    const extensao = path.extname(caminhoAbsoluto).toLowerCase();
+    res.writeHead(200, { 'Content-Type': TIPOS_MIME[extensao] || 'application/octet-stream' });
+    res.end(conteudo);
+  });
+}
+
 function servirArquivoEstatico(req, res) {
   let caminhoRelativo = decodeURIComponent(req.url.split('?')[0]);
   if (caminhoRelativo === '/') caminhoRelativo = '/index.html';
@@ -118,22 +142,31 @@ function servirArquivoEstatico(req, res) {
   }
 
   fs.readFile(caminhoAbsoluto, (erro, conteudo) => {
-    if (erro) {
-      fs.readFile(path.join(PASTA_PUBLICA, '404.html'), (erro404, conteudo404) => {
-        if (erro404) {
-          res.writeHead(404, { 'Content-Type': 'text/plain; charset=utf-8' });
-          res.end('Página não encontrada');
-        } else {
-          res.writeHead(404, { 'Content-Type': 'text/html; charset=utf-8' });
-          res.end(conteudo404);
-        }
-      });
+    if (!erro) {
+      const extensao = path.extname(caminhoAbsoluto).toLowerCase();
+      res.writeHead(200, { 'Content-Type': TIPOS_MIME[extensao] || 'application/octet-stream' });
+      res.end(conteudo);
       return;
     }
 
-    const extensao = path.extname(caminhoAbsoluto).toLowerCase();
-    res.writeHead(200, { 'Content-Type': TIPOS_MIME[extensao] || 'application/octet-stream' });
-    res.end(conteudo);
+    // Não achou o arquivo exato. Se o link não tem ponto (ex: /cord),
+    // tenta de novo colocando ".html" no final (ex: /cord.html).
+    if (!path.extname(caminhoAbsoluto)) {
+      const comHtml = caminhoAbsoluto + '.html';
+      if (comHtml.startsWith(PASTA_PUBLICA)) {
+        fs.readFile(comHtml, (erro2, conteudo2) => {
+          if (erro2) {
+            servir404(res);
+            return;
+          }
+          res.writeHead(200, { 'Content-Type': TIPOS_MIME['.html'] });
+          res.end(conteudo2);
+        });
+        return;
+      }
+    }
+
+    servir404(res);
   });
 }
 
