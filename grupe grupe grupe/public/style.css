@@ -1,8 +1,8 @@
 /* ===========================================================
    Grupo Ticord — folha de estilos compartilhada
-   Direção: escuro e moderno, estilo painel/dashboard.
-   Fundo roxo bem escuro em todo o site, painéis levemente
-   mais claros, texto branco/lavanda, acento violeta vivo,
+   Direção: preto e branco, estilo painel/dashboard.
+   Fundo bem escuro (quase preto) em todo o site, painéis em
+   tons de cinza, texto branco/cinza-claro, acento em branco,
    leitura de dados em monoespaçada.
    =========================================================== */
 
@@ -10,39 +10,39 @@
 
 :root {
   /* fundo e superfícies */
-  --fundo: #120821;
-  --fundo-elevado: #180b2c;
-  --superficie: #1c0f34;
-  --superficie-2: #241640;
-  --superficie-3: #2c1a4d;
+  --fundo: #0a0a0a;
+  --fundo-elevado: #111111;
+  --superficie: #161616;
+  --superficie-2: #1f1f1f;
+  --superficie-3: #282828;
 
-  /* roxo de marca (mantido para o rodapé / faixas) */
-  --roxo-950: #0d0518;
-  --roxo-900: #160929;
+  /* preto de marca (mantido para o rodapé / faixas) */
+  --roxo-950: #000000;
+  --roxo-900: #0d0d0d;
 
   /* acento */
-  --acento: #a970ff;
-  --acento-forte: #c6a2ff;
-  --acento-fraco: rgba(169, 112, 255, 0.14);
+  --acento: #ffffff;
+  --acento-forte: #d4d4d4;
+  --acento-fraco: rgba(255, 255, 255, 0.14);
 
   /* texto */
   --branco: #ffffff;
-  --texto: #f2edfa;
-  --texto-suave: #a698c2;
-  --texto-fraco: #786793;
+  --texto: #f2f2f2;
+  --texto-suave: #a3a3a3;
+  --texto-fraco: #707070;
 
   /* linhas */
   --linha: rgba(255, 255, 255, 0.09);
   --linha-forte: rgba(255, 255, 255, 0.18);
-  --linha-acento: rgba(169, 112, 255, 0.45);
+  --linha-acento: rgba(255, 255, 255, 0.45);
 
-  /* status */
-  --sucesso-bg: rgba(78, 230, 160, 0.12);
-  --sucesso-texto: #6ee8ab;
-  --sucesso-borda: rgba(78, 230, 160, 0.35);
-  --erro-bg: rgba(255, 107, 107, 0.12);
-  --erro-texto: #ff9d9d;
-  --erro-borda: rgba(255, 107, 107, 0.35);
+  /* status (diferenciados por estilo de borda, não por cor) */
+  --sucesso-bg: rgba(255, 255, 255, 0.08);
+  --sucesso-texto: #ffffff;
+  --sucesso-borda: rgba(255, 255, 255, 0.4);
+  --erro-bg: rgba(255, 255, 255, 0.04);
+  --erro-texto: #f2f2f2;
+  --erro-borda: rgba(255, 255, 255, 0.25);
 
   --fonte-titulo: "Space Grotesk", "Segoe UI", Arial, sans-serif;
   --fonte-corpo: "Inter", "Segoe UI", Arial, sans-serif;
@@ -116,7 +116,7 @@ p { margin: 0 0 1em; max-width: 62ch; color: var(--texto-suave); }
 /* ---------- cabeçalho ---------- */
 
 .cabecalho {
-  background: rgba(18, 8, 33, 0.86);
+  background: rgba(10, 10, 10, 0.86);
   backdrop-filter: blur(10px);
   border-bottom: 1px solid var(--linha);
   position: sticky;
@@ -192,7 +192,7 @@ nav.principal a[aria-current="page"] {
 
 .heroi {
   background:
-    linear-gradient(180deg, rgba(169,112,255,0.10) 0%, rgba(169,112,255,0) 45%),
+    linear-gradient(180deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0) 45%),
     var(--fundo-elevado);
   color: var(--branco);
   padding: 90px 0 88px;
@@ -422,7 +422,7 @@ nav.principal a[aria-current="page"] {
   font-family: var(--fonte-mono);
 }
 .mensagem-status.sucesso { display: block; background: var(--sucesso-bg); color: var(--sucesso-texto); border: 1px solid var(--sucesso-borda); }
-.mensagem-status.erro { display: block; background: var(--erro-bg); color: var(--erro-texto); border: 1px solid var(--erro-borda); }
+.mensagem-status.erro { display: block; background: var(--erro-bg); color: var(--erro-texto); border: 1px dashed var(--erro-borda); }
 
 .contato-grade {
   display: grid;
