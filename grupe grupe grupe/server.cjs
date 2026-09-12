@@ -130,6 +130,18 @@ function enviarArquivo(res, caminhoAbsoluto) {
 
 function servirArquivoEstatico(req, res) {
   let caminhoRelativo = decodeURIComponent(req.url.split('?')[0]);
+
+  // Se alguém acessar algo terminando em ".html", redireciona pra
+  // versão sem extensão (URL sempre "limpa", nunca mostra .html).
+  if (caminhoRelativo.endsWith('.html')) {
+    let destino = caminhoRelativo.slice(0, -'.html'.length);
+    if (destino === '/index' || destino === '') destino = '/';
+    const query = req.url.includes('?') ? req.url.slice(req.url.indexOf('?')) : '';
+    res.writeHead(301, { Location: destino + query });
+    res.end();
+    return;
+  }
+
   if (caminhoRelativo === '/') caminhoRelativo = '/index.html';
 
   const caminhoAbsoluto = path.normalize(path.join(PASTA_PUBLICA, caminhoRelativo));
